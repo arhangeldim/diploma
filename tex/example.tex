@@ -1,0 +1,63 @@
+\documentclass[a4paper,12pt]{extreport}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage[left=2cm,right=1cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{indentfirst}
+\usepackage{amssymb, soul}
+\usepackage{amsmath}
+
+\usepackage{pscyr}
+
+%межстрочный интервал
+\renewcommand{\baselinestretch}{1.65}
+
+%значки больше-меньше
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+
+%изменение оформления глав
+\makeatletter
+\renewcommand{\@makechapterhead}[1]{
+\vspace{10pt}
+{\parindent=0pt
+\raggedright \normalfont \Large \bfseries
+\thechapter. \hspace{5 pt}
+\normalfont \Large \bfseries #1\par
+\nopagebreak
+\vspace{10pt}
+}}
+
+\renewcommand{\@makeschapterhead}[1]{
+\vspace{10pt}
+{\parindent=0pt
+\raggedright \normalfont \Large \bfseries
+\normalfont \Large \bfseries #1\par
+\nopagebreak
+\vspace{10pt}
+}}
+
+\renewcommand{\@listI}{%
+\leftmargin=25pt
+\rightmargin=0pt
+\labelsep=5pt
+\labelwidth=20pt
+\itemindent=0pt
+\listparindent=0pt
+\topsep=8pt plus 2pt minus 4pt
+\partopsep=2pt plus 1pt minus 1pt
+\parsep=0pt plus 1pt
+\itemsep=\parsep}
+
+\renewcommand{\chapter}{
+\global\@topnum=0
+\@afterindenttrue
+\secdef\@chapter\@schapter}
+
+\makeatother
+
+\begin{document}
+\chapter{Обзор технологий}
+\input{tr_qemu}
+\input{tr_bluestack}
+\end{document}
