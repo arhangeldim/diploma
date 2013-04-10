@@ -9,6 +9,13 @@
 
 \usepackage{pscyr}
 
+%стиль библиографии
+\bibliographystyle{unsrt}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.} % Заменяем библиографию с квадратных скобок на точку:
+\makeatother
+
 %межстрочный интервал
 \renewcommand{\baselinestretch}{1.65}
 
@@ -57,7 +64,26 @@
 \makeatother
 
 \begin{document}
+\renewcommand{\bibname}{Список источников}
+\renewcommand{\contentsname}{\center{СОДЕРЖАНИЕ}}
+
+\tableofcontents
+
+\newpage
+\input{formal_virtual_req}
+
+\newpage
+\input{arm_server}
+
+\newpage
+\chapter{Архитектура ARM}
+\input{arm_arch}
+
+\newpage
 \chapter{Обзор технологий}
 \input{tr_qemu}
 \input{tr_bluestack}
+
+\newpage
+\bibliography{arm_biblio}
 \end{document}

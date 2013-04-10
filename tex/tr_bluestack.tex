@@ -1,24 +1,72 @@
+%Technical Review Bluestack
 \section{BlueStacks}
 
 BlueStacks AppPlayer позволяет запускать Android приложения на Windows или Mac. На данный момент распространяется бесплатно, исходные коды закрыты. BlueStacks обеспечивает запуск приложений Android в полноэкранном или оконном режимах, синхронизацию с Android устройством, доступ к сервисам через Google-аккаунт, доступ к Google Play. BlueStacks имеет также свой онлайн-сервис BlueStacks Connection Cloud, в облаке можно хранить до 35 приложений. С помощью сервиса можно устанавливать новые приложения, синхронизировать приложения, контакты и другую информацию между различными копиями BlueStacks AppPlayer и реальными Android-устройствами. Поддерживаются многие хостовые устройства ввода - touchscreen (а также акселерометр для tablet-устройств под управлением Windows8), touchpad, клавиатура, мышь.
 
-На официальном сайте говорится, что BlueStacks использует гипервизор, это позволяет добиться большей производительности по сравнению с эмуляцией. Сейчас BlueStacks использует внутри себя Android 2.3.4 (API 10), ядро Linux 2.6.38-android-x86, но в течение 2013 года планируется переход на Android 4.2 (API 17). Начиная с бета-версии (текущая) BlueStacks поддерживает исполнение native ARM кода, используя бинарную трансляцию. Библиотеки libhoudini.so от Intel для бинарной трансляции ARM/x86 в сборке не найдено. BlueStacks работает с различными комбинациями операционных систем и аппаратных архитектур.
+{\bf Технология}
 
-На данный момент поддерживаются:
-\begin{itemize}
-    \item Android on Windows (x86);
-    \item Android on Windows (ARM since Windows 8 release);
-    \item Android on Chrome OS (x86);
-    \item Windows on Android (x86);
-\end{itemize}
+BlueStacks использует внутри себя Android 2.3.4 (API 10), ядро Linux 2.6.38-android-x86, но в течение 2013 года планируется переход на Android 4.2 (API 17). Начиная с бета-версии (текущая) BlueStacks поддерживает исполнение native ARM кода, используя бинарную трансляцию. Библиотеки libhoudini.so от Intel для бинарной трансляции ARM/x86 в сборке не найдено.
 
-В среднем скорость работы выше, чем у эмулятора Android. BlueStacks поддерживает adb интерфейс и может использоваться для отладки приложений.
+Предположительно внутри BlueStacks использует переписанное ядро Linux, которое перенаправляет свои вызовы гипервизору. Гипервизор устанавливается в хостовую систему как драйвер (HD-Hypervisor-amd64.sys/HD-Hypervisor-x86.sys). Таким образом используется механизм паравиртуализации. Аппаратная виртуализация не используется (При отключении в BIOS аппаратной виртуализации результаты замеров не изменяются). Из-за использования паравиртуализации сложно поддерживать новые версии операционной системы, поэтому выпуск BlueStacks с Android 4.2 запланирован на вторую половину 2013 года.
 
-BlueStacks в течение 2012 года заключили несколько коммерческих сделок с крупными OEM компаниями - Lenovo, ASUS и с производителями hardware - AMD, Intel. Lenovo и ASUS будут предустанавливать BlueStacks AppPlayer на свои новые ноутбуки, начиная с 2013 года.
+В памяти хостовой системы висит несколько процессов, связанных с Bluestack. HD-Adb - сервис отвечает за adb интерфейс, HD-Frontend.exe - интерфейс, HD-Agent.exe - основной (?) фоновый процесс. HD-LogRotator.exe - логирование. HD-BlockDevice.exe - работа с файловой системой Android. Рабочая директория приложения в Windows C:/ProgramData/Bluestacks в ней хранятся логи (для всех сервисов и гипервизора), образ операционной системы, файловая система (initrd.img, kernel.elf, Root.fs, Prebundled.fs).
 
-Партнерство BlueStacks и AMD/Intel в основном нацелено на оптимизацию Android приложений для AMD/Intel-based Windows устройств. BlueStacks использует проприетарную технологию Layercake, которая позволяет улучшить производительность Android приложений, игр в Windows (в будущем, видимо, и в OS X). Android приложения обычно используют возможности графического ускорителя (SGX), установленного на плате (ARM Mali, PowerVR, Nvidia Tegra), Layercake позволяет использовать при виртуализации графические ускорители AMD (GPU/APU технологии)на x86. AMD использует технологии BlueStacks предлагая пользователям плеер Android-приложений AppZone Player и магазин приложений AppZone. Плеер предустанавливается на ноутбуки, использующие процессоры AMD. Про Intel еще нет достаточной информации. Для корректной работы BlueStacks AppPlayer требуется OpenGL ES 2.0.
+{\bf Производительность}
 
-В данный момент планируется портирование BlueStacks на Windows RT (в течение 2013 года). Прототип уже был представлен на конференции. BlueStacks удостоился CES Best Software 2012 Award Winner, CES Best Innovation 2013 Award Winner. Также компания получила инвестиции от AMD, Intel, Qualconn, Citrix и других.
+Замеры проводились на PC Windows Vista, AMD Athlon 64 X2 Dual Processor 4800+, 6Gb RAM, NVIDIA GeForce6150 и на Mac 10.6.6 SnowLeopard, Quad-Corei7, 2,2 GHz, 4Gb RAM, AMD Radeon HD 6490M, 1Gb. Сравнение проводилось с Parallels Desktop (на PC 6.0, на Mac 9.0).
+
+Тест Pidigits - вычисляет значение числа ${\pi}$ (первые n символов), тест написан на Java.
+Бенчмарк LinpackPro - замеряет скорость операций с плавающей точкой (FLOPS).
+
+Результаты теста на PC Таблица \ref{tab:pc_pidigits}.
+Результаты теста на Mac Таблица \ref{tab:mac_pidigits}. Тест в Bluestacks(Mac) работает нестабильно, время от времени приложение завершает работу при большом количестве вычисляемых символов. Возможно это проблемы с выделением памяти(поддержка Mac была добавлена недавно).
+
+По сравнению с QEMU оба решения работают в десятки раз быстрее.
+
+Бенчмарк на Mac дает результат 32.2 MFLOPS(Bluestacks) / 101 MFLOPS(PD 9).
+
+\begin{table}[h]
+\caption{\label{tab:pc_pidigits} Pidigits. PC: Bluestacks PC and PD 6.0}
+\begin{center}
+\begin{tabular} {|c|c|c|}
+\hline
+Количество символов $\pi$ & Bluestacks, $10^3$ms & PD, $10^3$ms \\
+\hline
+100 & 0.08 & 0.2 \\
+\hline
+1000 & 1.2 & 3.0 \\
+\hline
+10000 & 53 & 94 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\begin{table}[h]
+\caption{\label{tab:mac_pidigits} Pidigits. Mac: Bluestacks PC and PD 9.0}
+\begin{center}
+\begin{tabular} {|c|c|c|}
+\hline
+Количество символов $\pi$ & Bluestacks, $10^3$ms & PD, $10^3$ms \\
+\hline
+100 & 0.07 & 0.05 \\
+\hline
+1000 & 1.2 & 0.9 \\
+\hline
+10000 & 46 & 27 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+{\bf Развитие проекта}
+
+BlueStacks в течение 2012 года заключили несколько коммерческих сделок с крупными OEM компаниями - Lenovo, ASUS и с производителями hardware - AMD, Intel. Lenovo и ASUS будут предустанавливать BlueStacks AppPlayer на свои новые ноутбуки, начиная с 2013 года. Сейчас компания получает деньги за рекламу приложений.
+
+AMD использует технологии BlueStacks предлагая пользователям плеер Android-приложений AppZone Player и магазин приложений AppZone. Плеер предустанавливается на ноутбуки, использующие процессоры AMD. Про Intel еще нет достаточной информации. Для корректной работы BlueStacks AppPlayer требуется OpenGL ES 2.0.
+
+В данный момент планируется портирование BlueStacks на Windows RT (в течение 2013 года) и апдейт до версии Android 4.2.
 
 
 
