@@ -9,6 +9,9 @@
 
 \usepackage{pscyr}
 
+% гиперссылки в документе
+%\usepackage[unicode]{hyperref}
+
 %стиль библиографии
 \bibliographystyle{unsrt}
 
@@ -70,17 +73,19 @@
 \tableofcontents
 
 \newpage
+\chapter{Понятие виртуализации}
 \input{formal_virtual_req}
+\input{virtual_technics}
 
-\newpage
-\input{arm_server}
+%\newpage
+%\input{arm_server}
 
 \newpage
 \chapter{Архитектура ARM}
 \input{arm_arch}
 
 \newpage
-\chapter{Обзор технологий}
+\chapter{Обзор существующих решений}
 \input{tr_qemu}
 \input{tr_bluestack}
 
