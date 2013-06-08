@@ -2,8 +2,9 @@
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
-\usepackage[left=2cm,right=1cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[left=3cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{indentfirst}
+\usepackage[dvips]{graphicx}
 \usepackage{amssymb, soul}
 \usepackage{amsmath}
 
@@ -11,6 +12,9 @@
 
 % гиперссылки в документе
 %\usepackage[unicode]{hyperref}
+
+%Пути к иллюстрациям
+\graphicspath{{../images/eps/stat/}}
 
 %стиль библиографии
 \bibliographystyle{unsrt}
@@ -84,9 +88,9 @@
 \chapter{Литературный обзор}
     \section{Формальные требования к виртуализации}
         \input{formal_virtual_req}
-    
-    \newpage    
-    \section{Техники виртуализации}    
+
+    \newpage
+    \section{Техники виртуализации}
         \input{virtual_technics}
 
     \newpage
@@ -101,7 +105,21 @@
 
 \newpage
 \chapter{Методика решения задачи}
-    \input{method}
+    \section{Общая модель}
+        \input{general_model}
+
+    \newpage
+    \section{Программные средства}
+
+    \newpage
+    \section{Сбор статистики}
+        \input{statistic}
+		\newpage
+        \input{instr_format}
+	
+	\newpage
+	\section{Основной алгоритм}
+		\input{indexing}
 
 \newpage
 \bibliography{arm_biblio}
